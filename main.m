@@ -1,4 +1,4 @@
-%% bildserie 1
+%% test 1
 test = imread('HDR/IMG_5178.jpg');
 tes1 = imread('HDR/IMG_5177.jpg');
 tes2 = imread('HDR/IMG_5176.jpg');
@@ -15,4 +15,11 @@ hdr = makehdr(files,'RelativeExposure',expTimes./expTimes(1));
 rgb = tonemap(hdr);
 imshow(rgb)
 
-%%
+%% bildserie 1
+
+for i= 1:13 %read all images in sequance
+    
+    seq1{i} = im2double(imread(['HDR/Img' int2str(i) '.tiff']));
+    imshow(seq{i})
+end
+    
