@@ -61,16 +61,17 @@ plot(y,globaMinIndexes, 'r+', 'MarkerSize', 10, 'LineWidth', 1);
 for i = 1: 14
 
     tempImage = double(images{i});
-    mat(1,i) = tempImage(b,a);
-    mat(2,i) = tempImage(b1,a1);
-    mat(3,i) = tempImage(globaMinIndexes,y);
+    mat(1,i) = tempImage(a,b);
+    mat(2,i) = tempImage(a1,b1);
+    mat(3,i) = tempImage(y,globaMinIndexes);
 
 end
-plot(log(mat(1,:)))
+loglog(mat(1,:))
 hold on
-plot(log(mat(2,:)))
+loglog(mat(2,:))
 hold on
-plot(log(mat(3,:)))
+loglog(mat(3,:))
+
 
 %% 
 
@@ -78,7 +79,7 @@ ExposureTimes = zeros(1,14);
 
 for i = 1:6
        tempImage = rgb2gray(images{i});
-       ExposureTimes(1,i) = 1/2*(2^i);
+       ExposureTimes(1,i) = 1/2*i;
        
        ExposureImages = ExposureTimes(1,i)*tempImage;
        imshow(ExposureImages)
