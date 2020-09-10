@@ -6,6 +6,8 @@ plot(gfun)
 hold on
 plot(2.^gfun)
 
+
+
 title('Plot of gfun and their exponential')
 legend('gfun', '2^{gfun}')
 %% bildserie 1
@@ -25,7 +27,6 @@ im13 = imread('HDR/Img13.tiff');
 im14 = imread('HDR/Img14.tiff');
 
 images = {im1, im2, im3, im4,im5, im6, im7, im8, im9, im10, im11, im12, im13, im14};
-expTimes = [0.0333 0.1000 0.3333 0.6250 1.3000 4.0000];
 montage(images)
 
 
@@ -33,39 +34,70 @@ montage(images)
 
 [a, b] = findLowestIntensity(images);
 
-imshow(im14)
+%% find highest intensity
+[a1, b1] = findHighestIntensity(images);
+
+imshow(im1)
 axis on
 hold on;
 % Plot cross at row 100, column 50
-plot(b,a, 'r+', 'MarkerSize', 10, 'LineWidth', 1);
-%% find highest intensity
-
-
-[a1, b1] = findHighestIntensity(images);
-
+plot(b1,a1, 'r+', 'MarkerSize', 10, 'LineWidth', 1);
 %% find gray
 
 lowImg = images{9};
 grayImg = rgb2gray(im2double(lowImg));
 [height, width] = size(grayImg);
 
-minDiff = 5-min(min(abs(0.5-grayImg)));
-x=0;
-y=0;
-for i = 1:height
-    for j = 1:width
-        if  grayImg(:, j) ~= minDif
-            x=x+1;
-        
-        else
-            break;
-        end
-        
-    end
-        if  grayImg(:, i) ~= 0.5
-            y=y+1;
-        
-        else
-            break;
-        end
+[globaMinIndexes,y] = Gray_point(grayImg);
+
+imshow(grayImg)
+axis on
+hold on;
+% Plot cross at row 100, column 50
+plot(y,globaMinIndexes, 'r+', 'MarkerSize', 10, 'LineWidth', 1);
+
+%% Find the common matrices for highest, lowest and median gray point.
+
+for i = 1: 14
+
+    tempImage = double(images{i});
+    mat(1,i) = tempImage(b,a);
+    mat(2,i) = tempImage(b1,a1);
+    mat(3,i) = tempImage(globaMinIndexes,y);
+
 end
+plot(mat(1,:))
+hold on
+plot(mat(2,:))
+hold on
+plot(mat(3,:))
+
+%% 
+
+ExposureTimes = zeros(1,14);
+
+for i = 1:14
+
+       ExposureTimes(1,i);
+    
+end
+
+%%
+[hdr, rgb, logE, points] = HDR(images)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
