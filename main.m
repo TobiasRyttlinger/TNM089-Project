@@ -6,6 +6,8 @@ plot(gfun)
 hold on
 plot(2.^gfun)
 
+
+
 title('Plot of gfun and their exponential')
 legend('gfun', '2^{gfun}')
 %% bildserie 1
@@ -80,7 +82,8 @@ for i = 1:14
     
 end
 
-
+%%
+[hdr, rgb, logE, points] = HDR(images)
 
 
 
