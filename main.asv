@@ -76,7 +76,7 @@ ExposureTimes = zeros(1,14);
 
 for i = 1:14
 
-       ExposureTimes(1,i);
+       ExposureTimes(1,i) =  
     
 end
 

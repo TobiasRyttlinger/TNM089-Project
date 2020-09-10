@@ -3,7 +3,7 @@ function [a, b] = findHighestIntensity(images)
 %   Detailed explanation goes here
 
     lowImg = images{1};
-    
+    imshow(lowImg)
     grayImg = rgb2gray(lowImg);
     
 
