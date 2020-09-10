@@ -64,20 +64,22 @@ for i = 1: 14
     mat(3,i) = tempImage(globaMinIndexes,y);
 
 end
-plot(mat(1,:))
+plot(log(mat(1,:)))
 hold on
-plot(mat(2,:))
+plot(log(mat(2,:)))
 hold on
-plot(mat(3,:))
+plot(log(mat(3,:)))
 
 %% 
 
 ExposureTimes = zeros(1,14);
 
-for i = 1:14
-
-       ExposureTimes(1,i);
-    
+for i = 1:6
+       tempImage = rgb2gray(images{i});
+       ExposureTimes(1,i) = 1/2*(2^i);
+       
+       ExposureImages = ExposureTimes(1,i)*tempImage;
+       imshow(ExposureImages)
 end
 
 
