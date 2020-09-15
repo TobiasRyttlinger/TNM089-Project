@@ -49,9 +49,7 @@ function [g,lE]=gSolver(Z,B,l,w)
     
     % Include the smoothness equations
     for i=1:n-2
-        A(k,i)=l*w(i+1); 
-        A(k,i+1)=-2*l*w(i+1); 
-        A(k,i+2)=l*w(i+1);
+        A(k,i)=l*w(i+1); A(k,i+1)=-2*l*w(i+1); A(k,i+2)=l*w(i+1);
         k=k+1;
     end
     

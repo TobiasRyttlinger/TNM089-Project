@@ -1,4 +1,4 @@
-function [zRed,zGreen, zBlue] = sampleRGB(images)
+function [Red,Green, Blue] = sampleRGB(images)
     % code based on debevec
     %number of pixels in one image and number od exposures(images)
     numPixels = size(images{1},1)*size(images{1},2);
@@ -13,17 +13,17 @@ function [zRed,zGreen, zBlue] = sampleRGB(images)
     % i.e. exactly the range of indices of zInput
     step = numPixels / numSamples;
     sampleIndices = floor((1:step:numPixels));
-    sampleIndices = sampleIndices';
+    sampleIndices = sampleIndices'
     
     
-    zRed = zeros(numSamples, numExposures);
-    zGreen = zeros(numSamples, numExposures);
-    zBlue = zeros(numSamples, numExposures);
+    Red = zeros(numSamples, numExposures);
+    Green = zeros(numSamples, numExposures);
+    Blue = zeros(numSamples, numExposures);
     
     
     for i=1:numExposures
         
-        image = images{i};
+        image = images{i}
         redChannel = image(:,:,1);
         tempRed = redChannel(sampleIndices);
     
@@ -32,13 +32,9 @@ function [zRed,zGreen, zBlue] = sampleRGB(images)
     
         blueChannel = image(:,:,3);
         tempBlue = blueChannel(sampleIndices);
-        
-        
-        zRed(:,i) = tempRed;
-        zGreen(:,i) = tempGreen;
-        zBlue(:,i) = tempBlue;
     end
     
    
+    
 end
 
