@@ -23,12 +23,9 @@ end
 exposures = {1/4000, 1/3000, 1/2000, 1/1000, 1/500, 1/250, 1/125, 1/60, 1/30, 1/15, 1/6, 1/3, 2/3, 4/3};
 
 
-%% HDR solver
 
-%[R,G,B] = HDRSolver(images, exposures);
-
-
-%% sample
+%% 1. Compute the camera response curve g
+%sample
 
 
 [zRed, zGreen, zBlue] = sampleRGB(images);
@@ -41,9 +38,9 @@ for e = 1:size(exposures,2)
     logExp{e} = log(exposures{e});
 end
 
-B = zeros(size(zRed,1)*size(zRed,2), size(exposures,2));
+dt = zeros(size(zRed,1)*size(zRed,2), size(exposures,2));
 for b=1:size(exposures,2)
-    B(:,b) = logExp{b};
+    dt(:,b) = logExp{b};
 end
 
 
@@ -59,17 +56,22 @@ end
 
 l=100;
 
-[gRed,lERed]=gSolver(zRed, B, l, weight);
+[gRed,lERed]=gSolver(zRed, dt, l, weight);
 
 [gGreen,lEGreen]=gSolver(zGreen, B, l, weight);
 
 [gBlue,lEBlue]=gSolver(zBlue, B, l, weight);
+
+
 
 plot(gBlue,'b')
 hold on
 plot(gRed,'r')
 hold on
 plot(gGreen,'g')
+set(gca, 'XDir','reverse')
+%hold off
+%plot(zBlue','x')
 
 title('Camera response function')
 ylabel('Log exposure')
@@ -77,6 +79,10 @@ xlabel('Pixel value')
 
 save('gMat.mat', 'gBlue', 'gRed', 'gGreen');
 
-%%
+%% 2. Recover radiance map
+% HDR solver
+
+[radianceMap, w] = HDRSolver(images, dt, weight, gRed, gGreen, gBlue);
 
 
+w
