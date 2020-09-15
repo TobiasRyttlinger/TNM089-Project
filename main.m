@@ -58,9 +58,9 @@ l=100;
 
 [gRed,lERed]=gSolver(zRed, dt, l, weight);
 
-[gGreen,lEGreen]=gSolver(zGreen, B, l, weight);
+[gGreen,lEGreen]=gSolver(zGreen, dt, l, weight);
 
-[gBlue,lEBlue]=gSolver(zBlue, B, l, weight);
+[gBlue,lEBlue]=gSolver(zBlue, dt, l, weight);
 
 
 
@@ -69,7 +69,7 @@ hold on
 plot(gRed,'r')
 hold on
 plot(gGreen,'g')
-set(gca, 'XDir','reverse')
+
 %hold off
 %plot(zBlue','x')
 
@@ -85,4 +85,4 @@ save('gMat.mat', 'gBlue', 'gRed', 'gGreen');
 [radianceMap, w] = HDRSolver(images, dt, weight, gRed, gGreen, gBlue);
 
 
-w
+

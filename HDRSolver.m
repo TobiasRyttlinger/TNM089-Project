@@ -9,7 +9,7 @@ radianceMap =1;
 
 for i=1:nrOfImages
     image = double(images{i});
-    %wij = w(image + 1);
+    wij = 1%w(image + 1);
 
 end
 
