@@ -82,7 +82,7 @@ save('gMat.mat', 'gBlue', 'gRed', 'gGreen');
 %% 2. Recover radiance map
 % HDR solver
 
-[radianceMap, w] = HDRSolver(images, dt, weight, gRed, gGreen, gBlue);
-
+[radianceMap] = HDRSolver(images, dt, weight, gRed, gGreen, gBlue);
+%%
 
 

@@ -1,34 +1,23 @@
-function radianceMap = HDRSolver(images, dt, weights, gRed, gGreen, gBlue)
+function [radianceMap] = HDRSolver(images, dt, weights, gRed, gGreen, gBlue)
 %GSOLVER Summary of this function goes here
 %   Detailed explanation goes here
 
-nrOfImages = 14;
+nrOfImages = size(images,2);
+ 
 
-% read cell array of images for each channel
-for i =1:nrOfImages
-    R{i} = images{i}(:,:,1);
-    G{i} = images{i}(:,:,2);
-    B{i} = images{i}(:,:,3);
+radianceMap = zeros(size(images{1}));
+
+numPixels = size(images{1},1)*size(images{1},2);
+
+%create empty matrix for exposure
+eRed= zeros(numPixels,nrOfImages);
+
+
+for i=1:nrOfImages
+    image = double(images{i});
+    
+
 end
-
-% create one cell of all images for each channel
-Rcell = [R(:,1:nrOfImages)];
-Gcell = [G(:,1:nrOfImages)];
-Bcell = [B(:,1:nrOfImages)];
-
-R = cell2mat(Rcell);
-G = cell2mat(Gcell);
-B = cell2mat(Bcell);
-
-
-
-for j=1:x
-    R_sub(j,:) = R(sample(j),:);
-    G_sub(j,:) = G(sample(j),:);
-    B_sub(j,:) = B(sample(j),:);
-end
-
-
 
 
 end
