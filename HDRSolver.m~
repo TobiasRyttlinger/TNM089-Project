@@ -1,23 +1,19 @@
-function [radianceMap] = HDRSolver(images, dt, weights, gRed, gGreen, gBlue)
-%GSOLVER Summary of this function goes here
-%   Detailed explanation goes here
-
-nrOfImages = size(images,2);
- 
-
-radianceMap = zeros(size(images{1}));
-
-numPixels = size(images{1},1)*size(images{1},2);
-
-%create empty matrix for exposure
-eRed= zeros(numPixels,nrOfImages);
+function [vecIm] = HDRSolver(images, dt, weights, gRed, gGreen, gBlue)
 
 
-for i=1:nrOfImages
-    image = double(images{i});
-    
-
+for nrOfImages = 1:size(image{1},2)
+    reshapedImageR{nrOfImages} = reshape(im{nrOfImages}(:,:,1),[s,1]);
+    reshapedImageG{nrOfImages} = reshape(im{nrOfImages}(:,:,2),[s,1]);
+    reshapedImageB{nrOfImages} = reshape(im{nrOfImages}(:,:,3),[s,1]); 
 end
 
+% Add together each image, from each channel to one long row of the images
+Rcell = [reshapedImageR(:,1:nrOfImages)];
+Gcell = [reshapedImageG(:,1:nrOfImages)];
+Bcell = [reshapedImageB(:,1:nrOfImages)];
+R = cell2mat(Rcell);
+G = cell2mat(Gcell);
+B = cell2mat(Bcell);
 
+   
 end

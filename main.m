@@ -50,7 +50,7 @@ weight = zeros(255,1);
 for k = 1:256
     weight(k) = weights(k);
 end
-
+%plot(weight)
 
 %% gsolver, camera response function g
 
@@ -82,7 +82,25 @@ save('gMat.mat', 'gBlue', 'gRed', 'gGreen');
 %% 2. Recover radiance map
 % HDR solver
 
-[radianceMap] = HDRSolver(images, dt, weight, gRed, gGreen, gBlue);
+[R,G,B] = HDRSolver(images, dt, weight, gRed, gGreen, gBlue);
 %%
+rgbImage = cat(3,R,G,B);
+
+%imagesc(B);
 
 
+%rgbImage=(rgbImage-min(rgbImage(:)))/(max(rgbImage(:))-min(rgbImage(:)));
+%imagesc(rgbImage);
+%colorbar
+
+%imshow(rgbImage)
+gamma = 0.7;
+A = 1;
+
+EgammaR = A*R.^gamma;
+EgammaG = A*G.^gamma;
+EgammaB = A*B.^gamma;
+
+
+imageGamma = cat(3,EgammaR,EgammaG,EgammaB);
+imshow(rgbImage)
