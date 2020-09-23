@@ -88,7 +88,7 @@ save('gMat.mat', 'gBlue', 'gRed', 'gGreen');
 %
 %imagesc(rgbImage);
 %colorbar
-%imshow(rgbImage)
+imshow(rgbImage)
 %imshow(HDR)
 gamma = 0.7;
 A = 1;
@@ -99,4 +99,4 @@ EgammaB = A*HDR(:,:,3).^gamma;
 
 
 imageGamma = cat(3,EgammaR,EgammaG,EgammaB);
-imshow(imageGamma)
+%imshow(imageGamma)

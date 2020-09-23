@@ -1,7 +1,9 @@
 function [HDRImage] = HDRSolver(images, dt, weights, gRed, gGreen, gBlue)
 
 imSize = size(images{1}, 1) * size(images{1}, 2);
-imgDims = images{1};
+heightIm = size(images,1);
+widthIm = size(images,2);
+
 % Adding each channel of the images to an array.
 for i = 1:size(images,2)
     R(:,i) = reshape(images{i}(:,:,1), [imSize, 1]);
@@ -33,11 +35,14 @@ for c = 1:nrOfImages
     sumB = sumB + Exp_B(:,c);  
 end
 
+normSumR = sumR/nrOfImages;
+normSumG = sumG/nrOfImages;
+normSumB = sumB/nrOfImages;
 % takes the mean for each pixel of each image in each channel and reshapes
 % them from a single row to an image again
-radianceMapR = reshape(sumR/nrOfImages,[size(imgDims,1),size(imgDims,2)]);
-radianceMapG = reshape(sumG/nrOfImages,[size(imgDims,1),size(imgDims,2)]);
-radianceMapB = reshape(sumB/nrOfImages,[size(imgDims,1),size(imgDims,2)]);
+radianceMapR = reshape(normSumR,[heightIm,widthIm]);
+radianceMapG = reshape(normSumG,[heightIm,widthIm]);
+radianceMapB = reshape(normSumB,[heightIm,widthIm]);
    
 HDRImage= cat(3,radianceMapR, radianceMapG, radianceMapB);
 
