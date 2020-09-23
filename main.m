@@ -82,25 +82,21 @@ save('gMat.mat', 'gBlue', 'gRed', 'gGreen');
 %% 2. Recover radiance map
 % HDR solver
 
-[R,G,B] = HDRSolver(images, dt, weight, gRed, gGreen, gBlue);
+[HDR] = HDRSolver(images, dt, weight, gRed, gGreen, gBlue);
 %%
-rgbImage = cat(3,R,G,B);
-
 %imagesc(B);
-
-
-%rgbImage=(rgbImage-min(rgbImage(:)))/(max(rgbImage(:))-min(rgbImage(:)));
+%
 %imagesc(rgbImage);
 %colorbar
-
 %imshow(rgbImage)
+%imshow(HDR)
 gamma = 0.7;
 A = 1;
 
-EgammaR = A*R.^gamma;
-EgammaG = A*G.^gamma;
-EgammaB = A*B.^gamma;
+EgammaR = A*HDR(:,:,1).^gamma;
+EgammaG = A*HDR(:,:,2).^gamma;
+EgammaB = A*HDR(:,:,3).^gamma;
 
 
 imageGamma = cat(3,EgammaR,EgammaG,EgammaB);
-imshow(rgbImage)
+imshow(imageGamma)

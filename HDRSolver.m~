@@ -1,19 +1,56 @@
-function [vecIm] = HDRSolver(images, dt, weights, gRed, gGreen, gBlue)
+function [E_normR,E_normG,E_normB] = HDRSolver(images, dt, weights, gRed, gGreen, gBlue)
 
-
-for nrOfImages = 1:size(image{1},2)
-    reshapedImageR{nrOfImages} = reshape(im{nrOfImages}(:,:,1),[s,1]);
-    reshapedImageG{nrOfImages} = reshape(im{nrOfImages}(:,:,2),[s,1]);
-    reshapedImageB{nrOfImages} = reshape(im{nrOfImages}(:,:,3),[s,1]); 
+imSize = size(images{1}, 1) * size(images{1}, 2);
+imgDims = images{1};
+% Adding each channel of the images to an array.
+for i = 1:size(images,2)
+    R(:,i) = reshape(images{i}(:,:,1), [imSize, 1]);
+    G(:,i) = reshape(images{i}(:,:,2), [imSize, 1]);
+    B(:,i) = reshape(images{i}(:,:,3), [imSize, 1]);
 end
 
-% Add together each image, from each channel to one long row of the images
-Rcell = [reshapedImageR(:,1:nrOfImages)];
-Gcell = [reshapedImageG(:,1:nrOfImages)];
-Bcell = [reshapedImageB(:,1:nrOfImages)];
-R = cell2mat(Rcell);
-G = cell2mat(Gcell);
-B = cell2mat(Bcell);
+% Making the radiance map
 
+sum_R = 0;
+sum_G = 0;
+sum_B = 0;
+nrOfImages = size(images,2);
+for n = 1:nrOfImages
+    for m = 1:256
+ 
+       
+        % equation 5 
+        Exp_R(find(R(:,n) == m-1),n) = (gRed(m)-dt(n));
+        Exp_G(find(G(:,n) == m-1),n) = (gGreen(m)-dt(n));
+        Exp_B(find(B(:,n) == m-1),n) = (gBlue(m)-dt(n));
+        
+        
+    end
+end
+
+for c = 1:nrOfImages
+% Add the color channels for each image.
+    sum_R = sum_R + Exp_R(:,c);
+    sum_G = sum_G + Exp_G(:,c);
+    sum_B = sum_B + Exp_B(:,c);  
+end
+size(Exp_R)
+% takes the mean for each pixel of each image in each channel and reshapes
+% them from a single row to an image again
+radiance_mapR = reshape(sum_R/nrOfImages,[size(imgDims,1),size(imgDims,2)]);
+radiance_mapG = reshape(sum_G/nrOfImages,[size(imgDims,1),size(imgDims,2)]);
+radiance_mapB = reshape(sum_B/nrOfImages,[size(imgDims,1),size(imgDims,2)]);
    
+
+minE = min([min(radiance_mapR(:)),min(radiance_mapG(:)),min(radiance_mapB(:))]);
+maxE = max([max(radiance_mapR(:)),max(radiance_mapG(:)),max(radiance_mapB(:))]);
+
+%Normalising based on the max and min radiance to [0,1]
+for i = 1:size(imgDims,1) 
+   for j = 1:size(imgDims,2)
+         E_normR(i,j) = (radiance_mapR(i,j)-minE)/(maxE-minE);
+         E_normG(i,j) = (radiance_mapG(i,j)-minE)/(maxE-minE);
+         E_normB(i,j) = (radiance_mapB(i,j)-minE)/(maxE-minE);
+   end
+end
 end
