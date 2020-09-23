@@ -83,20 +83,26 @@ save('gMat.mat', 'gBlue', 'gRed', 'gGreen');
 % HDR solver
 
 [HDR] = HDRSolver(images, dt, weight, gRed, gGreen, gBlue);
-%%
-%imagesc(B);
-%
-%imagesc(rgbImage);
-%colorbar
-imshow(rgbImage)
-%imshow(HDR)
-gamma = 0.7;
-A = 1;
+%% 3.1 ldr tonemapping
+% local reinhard method
+saturation = 0.5;
+eps = 0.5;
+phi = 8;
+[ldrLocal, luminanceLocal, v, v1Final, sm ]  = reinhardLocal(HDR, saturation, eps, phi);
 
-EgammaR = A*HDR(:,:,1).^gamma;
-EgammaG = A*HDR(:,:,2).^gamma;
-EgammaB = A*HDR(:,:,3).^gamma;
+imshow(ldrLocal);
+%% 3.2 global reainhard method
 
+a = 0.97;
+saturation = 0.65;
+[ldrGlobal, ldrLuminanceMap ] = reinhardGlobal( HDR, a, saturation);
+imshow(ldrGlobal)
+%% 3.3 gamma correction
 
-imageGamma = cat(3,EgammaR,EgammaG,EgammaB);
-%imshow(imageGamma)
+Dmax = max(max(ldrGlobal));
+D = ldrLocal;
+D(:,:,1) = Dmax(:,:,1)*((D(:,:,1)/Dmax(:,:,1)).^(1/2.1));
+D(:,:,2) = Dmax(:,:,2)*((D(:,:,2)/Dmax(:,:,2)).^(1/2.4));
+D(:,:,3) = Dmax(:,:,3)*((D(:,:,3)/Dmax(:,:,3)).^(1/1.8));
+
+imshow(D)

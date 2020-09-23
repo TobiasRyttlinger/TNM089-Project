@@ -1,7 +1,9 @@
-function [E_normR,E_normG,E_normB] = HDRSolver(images, dt, weights, gRed, gGreen, gBlue)
+function [HDRImage] = HDRSolver(images, dt, weights, gRed, gGreen, gBlue)
 
 imSize = size(images{1}, 1) * size(images{1}, 2);
-imgDims = images{1};
+heightIm = size(images{1},1);
+widthIm = size(images{1},2);
+
 % Adding each channel of the images to an array.
 for i = 1:size(images,2)
     R(:,i) = reshape(images{i}(:,:,1), [imSize, 1]);
@@ -11,46 +13,34 @@ end
 
 % Making the radiance map
 
-sum_R = 0;
-sum_G = 0;
-sum_B = 0;
+normSumR = zeros(1,size(R,1));
+normSumG = zeros(1,size(R,1));
+normSumB = zeros(1,size(R,1));
 nrOfImages = size(images,2);
 for n = 1:nrOfImages
     for m = 1:256
  
-       
         % equation 5 
-        Exp_R(find(R(:,n) == m-1),n) = (gRed(m)-dt(n));
-        Exp_G(find(G(:,n) == m-1),n) = (gGreen(m)-dt(n));
-        Exp_B(find(B(:,n) == m-1),n) = (gBlue(m)-dt(n));
-        
-        
+        Exp_R(find(R(:,n) == m-1),n) = weights(m)*(gRed(m)-dt(n))/weights(m);
+        Exp_G(find(G(:,n) == m-1),n) = weights(m)*(gGreen(m)-dt(n))/weights(m);
+        Exp_B(find(B(:,n) == m-1),n) = weights(m)*(gBlue(m)-dt(n))/weights(m);
+         
     end
 end
+normSumR = sum(Exp_R')/nrOfImages;
+normSumG = sum(Exp_G')/nrOfImages;
+normSumB = sum(Exp_B')/nrOfImages;
 
-for c = 1:nrOfImages
-% Add the color channels for each image.
-    sum_R = sum_R + Exp_R(:,c);
-    sum_G = sum_G + Exp_G(:,c);
-    sum_B = sum_B + Exp_B(:,c);  
-end
-size(Exp_R)
-% takes the mean for each pixel of each image in each channel and reshapes
-% them from a single row to an image again
-radiance_mapR = reshape(sum_R/nrOfImages,[size(imgDims,1),size(imgDims,2)]);
-radiance_mapG = reshape(sum_G/nrOfImages,[size(imgDims,1),size(imgDims,2)]);
-radiance_mapB = reshape(sum_B/nrOfImages,[size(imgDims,1),size(imgDims,2)]);
+
+% reshape back to an image from vectorzed image
+radianceMapR = reshape(normSumR,[heightIm,widthIm]);
+radianceMapG = reshape(normSumG,[heightIm,widthIm]);
+radianceMapB = reshape(normSumB,[heightIm,widthIm]);
    
+HDRImage= cat(3,radianceMapR, radianceMapG, radianceMapB);
 
-minE = min([min(radiance_mapR(:)),min(radiance_mapG(:)),min(radiance_mapB(:))]);
-maxE = max([max(radiance_mapR(:)),max(radiance_mapG(:)),max(radiance_mapB(:))]);
+HDRImage=(HDRImage-min(HDRImage(:)))/(max(HDRImage(:))-min(HDRImage(:)));
 
-%Normalising based on the max and min radiance to [0,1]
-for i = 1:size(imgDims,1) 
-   for j = 1:size(imgDims,2)
-         E_normR(i,j) = (radiance_mapR(i,j)-minE)/(maxE-minE);
-         E_normG(i,j) = (radiance_mapG(i,j)-minE)/(maxE-minE);
-         E_normB(i,j) = (radiance_mapB(i,j)-minE)/(maxE-minE);
-   end
-end
+%normalized image [0,1]
+
 end

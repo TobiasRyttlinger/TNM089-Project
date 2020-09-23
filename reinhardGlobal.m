@@ -14,7 +14,7 @@
 function [ ldrPic, ldrLuminanceMap ] = reinhardGlobal( hdr, a, saturation)
 
 fprintf('Computing luminance map\n');
-luminanceMap = makeLuminanceMap(hdr);
+luminanceMap = 0.2125 * hdr(:,:,1) + 0.7154 * hdr(:,:,2) + 0.0721 * hdr(:,:,3);
 
 
 numPixels = size(hdr,1) * size(hdr,2);
