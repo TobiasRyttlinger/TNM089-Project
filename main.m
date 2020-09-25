@@ -1,7 +1,7 @@
 %% bildserie 1
 
 % Read in pictures from folder
-HDRbilderna = 'HDR/';
+HDRbilderna = 'bildserie2/';
 
 if ~isfolder(HDRbilderna)
   errorMessage = sprintf('Error: The following folder does not exist:\n%s', HDRbilderna);
@@ -9,10 +9,10 @@ if ~isfolder(HDRbilderna)
   return;
 end
 
-filePattern = fullfile(HDRbilderna, '*.tiff');
+filePattern = fullfile(HDRbilderna, '*.jpg');
 tiffFiles = dir(filePattern);
 for i = 1:length(tiffFiles)
-  firstLetters = strcat('Img',num2str(i),'.tiff');
+  firstLetters = strcat('Img',num2str(i),'.jpg');
   completeName = fullfile(HDRbilderna, firstLetters);
   im{i} = imread(completeName);
   images{i} = im{i};
@@ -20,8 +20,8 @@ end
 
 %montage(images);
 
-exposures = {1/4000, 1/3000, 1/2000, 1/1000, 1/500, 1/250, 1/125, 1/60, 1/30, 1/15, 1/6, 1/3, 2/3, 4/3};
-
+%exposures = {1/4000, 1/3000, 1/2000, 1/1000, 1/500, 1/250, 1/125, 1/60, 1/30, 1/15, 1/6, 1/3, 2/3, 4/3};
+exposures = {1/4000, 1/2000, 1/1000, 1/500, 1/250, 1/125, 1/60, 1/30, 1/15, 1/6, 1/3};
 
 
 %% 1. Compute the camera response curve g
@@ -79,30 +79,36 @@ xlabel('Pixel value')
 
 save('gMat.mat', 'gBlue', 'gRed', 'gGreen');
 
+
+
 %% 2. Recover radiance map
 % HDR solver
+[HDR] = HDRSolver(images, dt, gRed, gGreen, gBlue);
+%size(HDR)
+imshow(HDR);
 
-[HDR] = HDRSolver(images, dt, weight, gRed, gGreen, gBlue);
+
 %% 3.1 ldr tonemapping
 % local reinhard method
 saturation = 0.5;
 eps = 0.5;
 phi = 8;
-[ldrLocal, luminanceLocal, v, v1Final, sm ]  = reinhardLocal(HDR, saturation, eps, phi);
+%[ldrLocal, luminanceLocal, v, v1Final, sm ]  = reinhardLocal(HDR, saturation, eps, phi);
 
 imshow(ldrLocal);
-%% 3.2 global reainhard method
+%% 3.2 global reinhard method
 
-a = 0.97;
-saturation = 0.65;
+a = 0.7;
+saturation = 0.7;
 [ldrGlobal, ldrLuminanceMap ] = reinhardGlobal( HDR, a, saturation);
 imshow(ldrGlobal)
+
 %% 3.3 gamma correction
 
-Dmax = max(max(ldrGlobal));
-D = ldrLocal;
-D(:,:,1) = Dmax(:,:,1)*((D(:,:,1)/Dmax(:,:,1)).^(1/2.1));
-D(:,:,2) = Dmax(:,:,2)*((D(:,:,2)/Dmax(:,:,2)).^(1/2.4));
-D(:,:,3) = Dmax(:,:,3)*((D(:,:,3)/Dmax(:,:,3)).^(1/1.8));
+Dmax = 1;
+D = HDR;
+D(:,:,1) = Dmax*((D(:,:,1)/Dmax).^(1/2.1));
+D(:,:,2) = Dmax*((D(:,:,2)/Dmax).^(1/2.4));
+D(:,:,3) = Dmax*((D(:,:,3)/Dmax).^(1/1.8));
 
 imshow(D)
