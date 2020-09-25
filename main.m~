@@ -2,43 +2,13 @@
 
 [exposures, images] = getImageSequence(2);
 
+%%
+info = imfinfo('bildserie3/Img2.jpg');
+info.DigitalCamera.ExposureTime
+
 %% 1. Compute the camera response curve g
-%sample
 
-
-[zRed, zGreen, zBlue] = sampleRGB(images);
-
-
-%% B, shutter speed used in gsolve, logarithm of exposure time
-
-logExp = {};
-for e = 1:size(exposures,2)
-    logExp{e} = log(exposures{e});
-end
-
-dt = zeros(size(zRed,1)*size(zRed,2), size(exposures,2));
-for b=1:size(exposures,2)
-    dt(:,b) = logExp{b};
-end
-
-
-%% weighting
-weight = zeros(255,1);
-
-for k = 1:256
-    weight(k) = weights(k);
-end
-%plot(weight)
-
-%% gsolver, camera response function g
-
-l=100;
-
-[gRed,lERed]=gSolver(zRed, dt, l, weight);
-
-[gGreen,lEGreen]=gSolver(zGreen, dt, l, weight);
-
-[gBlue,lEBlue]=gSolver(zBlue, dt, l, weight);
+[dt, gRed, gGreen, gBlue] = cameraResponse(images, exposures);
 
 plot(gBlue,'b')
 hold on
@@ -52,8 +22,6 @@ plot(gGreen,'g')
 title('Camera response function')
 ylabel('Log exposure')
 xlabel('Pixel value')
-
-save('gMat.mat', 'gBlue', 'gRed', 'gGreen');
 
 
 
@@ -75,8 +43,8 @@ imshow(ldrLocal);
 
 %% 3.2 global reinhard method
 
-a = 0.5;
-saturation = 0.8;
+a = 0.7;
+saturation = 0.7;
 [ldrGlobal, ldrLuminanceMap ] = reinhardGlobal( HDR, a, saturation);
 imshow(ldrGlobal)
 

@@ -1,6 +1,14 @@
 %% Select imge sequence by choosing sequence number 1,2,3 etc
 
-[exposures, images] = getImageSequence(3);
+[exposures, images] = getImageSequence(1);
+
+
+
+%%
+info = imfinfo('bildserie3/Img2.jpg')
+info.DigitalCamera.ExposureTime;
+
+info.Format
 
 %% 1. Compute the camera response curve g
 

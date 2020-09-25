@@ -34,7 +34,7 @@ l=100;
 [gBlue,lEBlue]=gSolver(zBlue, dt, l, weight);
 
 
-save('gMat.mat', 'gBlue', 'gRed', 'gGreen');
+
 
 
 end
