@@ -15,6 +15,8 @@ function [hdr] = HDRSolver(images, dt, gRed, gGreen, gBlue)
         wr=zred;          
         wr(zred>zMid)=zMax-zred(zred>zMid); 
         
+        
+        
         zgreen= im(:,:,2);
         wg=zgreen;          
         wg(zgreen>zMid)=zMax-zgreen(zgreen>zMid); 
