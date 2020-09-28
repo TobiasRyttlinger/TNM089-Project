@@ -19,27 +19,18 @@ elseif sequenceNumber == 3
     fileType = '*.jpg';
     file = '.jpg';
 
-elseif sequenceNumber == 4
-    directory = 'bildserie4/';
-    exposures = {1/350, 1/180, 1/90};
-    fileType = '*.jpg';
-    file = '.jpg';
 end
 
 
-if ~isfolder(directory)
-  errorMessage = sprintf('Error: The following folder does not exist:\n%s', directory);
-  uiwait(warndlg(errorMessage));
-  return;
-end
+
 
 filePattern = fullfile(directory, fileType);
 tiffFiles = dir(filePattern);
+
 for i = 1:length(tiffFiles)
   firstLetters = strcat('Img',num2str(i),file);
   completeName = fullfile(directory, firstLetters);
-  im{i} = imread(completeName);
-  images{i} = im{i};
+  images{i} = imread(completeName);
   imageInfo = imfinfo(strcat('Img',num2str(i),file));
   exposures{i} = imageInfo.DigitalCamera.ExposureTime;
 end
