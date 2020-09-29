@@ -1,6 +1,6 @@
 %% Select imge sequence by choosing sequence number 1,2,3 etc
 
-[exposures, images] = getImageSequence(2);
+[exposures, images] = getImageSequence(6);
 
 
 
