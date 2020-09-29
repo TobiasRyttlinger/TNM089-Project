@@ -1,6 +1,6 @@
 %% Select imge sequence by choosing sequence number 1,2,3 etc
 
-[exposures, images] = getImageSequence(4);
+[exposures, images] = getImageSequence(2);
 
 
 
@@ -25,7 +25,7 @@
 % HDR solver
 [HDR] = HDRSolver(images, dt, gRed, gGreen, gBlue);
 %size(HDR)
-imshow(HDR);
+%imshow(HDR);
 
 
 %% 3.1 ldr tonemapping
@@ -45,11 +45,12 @@ saturation = 0.6;
 imshow(ldrGlobal)
 
 
+
 %% 3.3 Our own tonemap
 
-% [ToneMap] = globalToneMap(HDR);
-% 
-% imshow(ToneMap.*1.2)
+%[ToneMap] = globalToneMap(HDR);
+
+%imshow(ToneMap.*1)
 % 
 % montage({ldrGlobal, ToneMap})
 %% 4. Quality measures
@@ -57,7 +58,7 @@ imshow(ldrGlobal)
 %SSIM
 %H = fspecial('Gaussian',[11 11],1.5);
 %A = imfilter(ldrGlobal,H,'replicate');
-[ssimval,ssimmap] = ssim(GlobalToneMap,ldrGlobal);
+%[ssimval,ssimmap] = ssim(GlobalToneMap,ldrGlobal);
 
 %imshow(ssimmap,[])
-ssimval
+%ssimval

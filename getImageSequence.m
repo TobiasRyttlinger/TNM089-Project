@@ -13,22 +13,33 @@ if sequenceNumber == 1
     
 elseif sequenceNumber == 2
     directory = 'bildserie2/';
-    %exposures = {1/4000, 1/2000, 1/1000, 1/500, 1/250, 1/125, 1/60, 1/30};
     fileType = '*.jpg';
     file = '.jpg';
 elseif sequenceNumber == 3
     directory = 'bildserie3/';
-    %exposures = {1/24000, 1/12000, 1/6000, 1/3000, 1/1500, 1/750, 1/350};
     fileType = '*.jpg';
     file = '.jpg';
     
 
 elseif sequenceNumber == 4
     directory = 'bildserie4/';
-    exposures = {0.00325, 0.00625, 0.0125, 0.025, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4, 12.8, 25.6};
-    fileType = '*.png';
-    file = '.png';
+    exposures = {1/0.03125, 1/0.0625, 1/0.125, 1/0.25, 1/0.5, 1, 1/2, 1/4, 1/8, 1/16, 1/32, 1/64, 1/128, 1/256, 1/512, 1/1024};
+    fileType = '*.jpg';
+    file = '.jpg';
     test =1;
+    
+elseif sequenceNumber == 5
+    directory = 'bildserie5/';
+    fileType = '*.jpg';
+    file = '.jpg';
+    
+elseif sequenceNumber == 6
+    directory = 'bildserie6/';
+    fileType = '*.tif';
+    file = '.tif';
+    exposures  = {1/120, 1/30, 1/8, 1/2};
+    test =1;
+    
 end
 
 
