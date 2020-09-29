@@ -1,6 +1,7 @@
 %% Select imge sequence by choosing sequence number 1,2,3 etc
 
-[exposures, images] = getImageSequence(2);
+[exposures, images] = getImageSequence(4);
+
 
 
 %% 1. Compute the camera response curve g
@@ -12,10 +13,8 @@
 % plot(gRed,'r')
 % hold on
 % plot(gGreen,'g')
-
-%hold off
-%plot(zBlue','x')
-
+% 
+% 
 % title('Camera response function')
 % ylabel('Log exposure')
 % xlabel('Pixel value')
@@ -26,17 +25,17 @@
 % HDR solver
 [HDR] = HDRSolver(images, dt, gRed, gGreen, gBlue);
 %size(HDR)
-%imshow(HDR);
+imshow(HDR);
 
 
 %% 3.1 ldr tonemapping
 % local reinhard method
-saturation = 0.6;
-eps = 0.05;
-phi = 14;
-[ldrLocal, luminanceLocal, v, v1Final, sm ]  = reinhardLocal(HDR, saturation, eps, phi);
-
-imshow(ldrLocal);
+% saturation = 0.6;
+% eps = 0.05;
+% phi = 14;
+% [ldrLocal, luminanceLocal, v, v1Final, sm ]  = reinhardLocal(HDR, saturation, eps, phi);
+% 
+% imshow(ldrLocal);
 
 %% 3.2 global reinhard method
 
@@ -48,11 +47,11 @@ imshow(ldrGlobal)
 
 %% 3.3 Our own tonemap
 
-[GlobalToneMap] = globalToneMap(HDR);
-
-imshow(GlobalToneMap)
-%%
-montage({ldrGlobal, GlobalToneMap})
+% [ToneMap] = globalToneMap(HDR);
+% 
+% imshow(ToneMap.*1.2)
+% 
+% montage({ldrGlobal, ToneMap})
 %% 4. Quality measures
 
 %SSIM
@@ -60,5 +59,5 @@ montage({ldrGlobal, GlobalToneMap})
 %A = imfilter(ldrGlobal,H,'replicate');
 [ssimval,ssimmap] = ssim(GlobalToneMap,ldrGlobal);
 
-imshow(ssimmap,[])
+%imshow(ssimmap,[])
 ssimval

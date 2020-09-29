@@ -12,7 +12,7 @@ N = size(HDRNorm,1) * size(HDRNorm,2);
 Lavg = exp(sum(Ltemp(:))/N);
 
 
-a = 0.7;
+a = 0.8;
 T = (a/Lavg)*L;
 
 T2max = max(T(:))*max(T(:));

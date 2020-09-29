@@ -1,16 +1,15 @@
 function [zRed,zGreen, zBlue] = sampleRGB(images)
-    % code based on debevec
-    %number of pixels in one image and number od exposures(images)
+    %code based on debevec
+    %number of pixels in one image and number of exposures(images)
     numPixels = size(images{1},1)*size(images{1},2);
     numExposures = size(images,2);
     
     
     numSamples = ceil(255*2 / (numExposures - 1)) * 2;
     
-    % create a random sampling matrix, telling us which
-    % pixels of the original image we want to sample
+    % create a random sampling matrix
     % using ceil fits the indices into the range [1,numPixels+1],
-    % i.e. exactly the range of indices of zInput
+    
     step = numPixels / numSamples;
     sampleIndices = floor((1:step:numPixels));
     sampleIndices = sampleIndices';
