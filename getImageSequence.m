@@ -37,7 +37,7 @@ elseif sequenceNumber == 6
     directory = 'bildserie6/';
     fileType = '*.tif';
     file = '.tif';
-    exposures  = {1/120, 1/30, 1/8, 1/2};
+    exposures = {1/120, 1/30, 1/8, 1/2};
     test =1;
     
 end
@@ -52,6 +52,7 @@ for i = 1:length(tiffFiles)
   firstLetters = strcat('Img',num2str(i),file);
   completeName = fullfile(directory, firstLetters);
   images{i} = imread(completeName);
+  images{i} =im2uint8(images{i});
   
   if test == 0
     imageInfo = imfinfo(strcat('Img',num2str(i),file));

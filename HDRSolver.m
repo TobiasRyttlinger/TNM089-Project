@@ -36,7 +36,7 @@ function [hdr] = HDRSolver(images, dt, gRed, gGreen, gBlue)
         
     end
    hdr = hdr./sum;
-   max(max(sum))
+   max(max(sum));
    hdr = exp(hdr);
     %ekv 6
 

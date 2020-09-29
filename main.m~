@@ -1,7 +1,8 @@
+
+clear
 %% Select imge sequence by choosing sequence number 1,2,3 etc
 
-[exposures, images] = getImageSequence(5);
-
+[exposures, images] = getImageSequence(4);
 
 
 %% 1. Compute the camera response curve g
@@ -26,7 +27,7 @@
 [HDR] = HDRSolver(images, dt, gRed, gGreen, gBlue);
 %size(HDR)
 imshow(HDR);
-
+find(HDR ==)
 
 %% 3.1 ldr tonemapping
 % local reinhard method
@@ -45,20 +46,19 @@ saturation = 0.6;
 imshow(ldrGlobal)
 
 
-
 %% 3.3 Our own tonemap
 
-[ToneMap] = globalToneMap(HDR);
-
-imshow(ToneMap.*1.2)
+% [ToneMap] = globalToneMap(HDR);
 % 
+% imshow(ToneMap)
+
 % montage({ldrGlobal, ToneMap})
 %% 4. Quality measures
 
 %SSIM
 %H = fspecial('Gaussian',[11 11],1.5);
 %A = imfilter(ldrGlobal,H,'replicate');
-[ssimval,ssimmap] = ssim(GlobalToneMap,ldrGlobal);
+%[ssimval,ssimmap] = ssim(GlobalToneMap,ldrGlobal);
 
 %imshow(ssimmap,[])
-ssimval
+%ssimval
