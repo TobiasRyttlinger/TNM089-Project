@@ -33,7 +33,9 @@ key = exp((1/numPixels)*(sum(sum(log(luminanceMap + delta)))));
 scaledLuminance = luminanceMap * (a/key);
 
 % all values are now mapped to the range [0,1]
-ldrLuminanceMap = scaledLuminance ./ (scaledLuminance + 1);
+
+
+ldrLuminanceMap = (scaledLuminance) ./ (scaledLuminance + 1);
 
 
 ldrPic = zeros(size(hdr));

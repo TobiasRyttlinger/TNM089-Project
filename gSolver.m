@@ -31,7 +31,6 @@ function [g,lE]=gSolver(Z,B,l,w)
     A = zeros(size(Z,1)*size(Z,2)+n+1,n+size(Z,1)); 
     b = zeros(size(A,1),1);
     
-    
     % Include the data-fitting equations
     k = 1;
     

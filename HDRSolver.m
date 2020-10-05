@@ -5,8 +5,8 @@ function [hdr] = HDRSolver(images, dt, gRed, gGreen, gBlue)
     % If Z >Zmid: w = Zmax -Z 
     accumulator = zeros(size(images{1}));
     hdr = zeros(size(images{1}));
-    sum = zeros(size(images{1}));
-    
+    summ = zeros(size(images{1}));
+     
     for i=1:size(images,2)
         
         im = double(images{i});
@@ -14,8 +14,6 @@ function [hdr] = HDRSolver(images, dt, gRed, gGreen, gBlue)
         zred= im(:,:,1);
         wr=zred;          
         wr(zred>zMid)=zMax-zred(zred>zMid); 
-        
-        
         
         zgreen= im(:,:,2);
         wg=zgreen;          
@@ -27,16 +25,39 @@ function [hdr] = HDRSolver(images, dt, gRed, gGreen, gBlue)
         
         w = cat(3, wr,wg,wb);
         
-        accumulator(:,:,1) = wr.*reshape(gRed(zred+1)-dt(1,i), size(zred)); % add g(Zij)-log(tj) to accumulator image
+        accumulator(:,:,1) = wr.*reshape(gRed(zred+1)-dt(1,i), size(zred)); 
         accumulator(:,:,2) = wg.*reshape(gGreen(zgreen+1)-dt(1,i), size(zgreen));
         accumulator(:,:,3) = wb.*reshape(gBlue(zblue+1)-dt(1,i), size(zblue));
         
         hdr = hdr + accumulator;
-        sum = sum + w;
+        summ = summ + w;
         
     end
-   hdr = hdr./sum;
-   max(max(sum));
+    
+   zeroIndR = find(summ(:,:,1)==0);
+   zeroIndG = find(summ(:,:,2)==0);
+   zeroIndB = find(summ(:,:,3)==0);
+   realMin = 0.001;
+   
+   [width, height, ~] = size(summ);
+  
+   summR = reshape(summ(:,:,1), [1,width*height]);
+   summG = reshape(summ(:,:,2), [1,width*height]);
+   summB = reshape(summ(:,:,3), [1,width*height]);
+   
+   summR(zeroIndR) = realmin;
+   summG(zeroIndR) = realmin;
+   summB(zeroIndR) = realmin;
+   
+   
+   summR = reshape(summR, [width, height]);
+   summG = reshape(summG, [width, height]);
+   summB = reshape(summB, [width, height]);
+   
+   summa = cat(3,summR, summG, summB);
+   
+   hdr = hdr./summa;
+ 
    hdr = exp(hdr);
     %ekv 6
 

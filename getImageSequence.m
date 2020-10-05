@@ -39,10 +39,39 @@ elseif sequenceNumber == 6
     file = '.tif';
     exposures = {1/120, 1/30, 1/8, 1/2};
     test =1;
+elseif sequenceNumber == 7
+    directory = 'bildserie7/';
+    fileType = '*.jpg';
+    file = '.jpg';
     
+elseif sequenceNumber == 8
+    directory = 'bildserie8/';
+    fileType = '*.jpg';
+    file = '.jpg';
+   
+ elseif sequenceNumber == 9
+    directory = 'bildserie9/';
+    fileType = '*.jpg';
+    file = '.jpg';   
+    
+ elseif sequenceNumber == 10
+    directory = 'bildserie10/';
+    fileType = '*.jpg';
+    file = '.jpg'; 
+    
+elseif sequenceNumber == 11
+    directory = 'bildserie11/';
+    fileType = '*.jpg';
+    file = '.jpg'; 
+
+
+elseif sequenceNumber == 12
+    directory = 'bildserie12/';
+    fileType = '*.jpg';
+    file = '.jpg'; 
+    exposures ={1/2500,1/1600, 1/800, 1/400, 1/200, 1/100, 1/50, 1/25, 1/13, 1/6, 1/3, 1, 2};
+    test = 1;
 end
-
-
 
 
 filePattern = fullfile(directory, fileType);

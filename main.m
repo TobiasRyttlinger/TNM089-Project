@@ -1,24 +1,31 @@
 
 clear
-%% Select imge sequence by choosing sequence number 1,2,3 etc
+clc
+%% Select image sequence by choosing sequence number 1,2,3 etc
 
-[exposures, images] = getImageSequence(6);
+[exposures, images] = getImageSequence(4);
+
+
+montage(images)
+%%
+%figure
+%montage(images)
 
 
 %% 1. Compute the camera response curve g
 
 [dt, gRed, gGreen, gBlue] = cameraResponse(images, exposures);
-
-plot(gBlue,'b')
-hold on
-plot(gRed,'r')
-hold on
-plot(gGreen,'g')
-
-
-title('Camera response function')
-ylabel('Log exposure')
-xlabel('Pixel value')
+% 
+% plot(gBlue,'b')
+% hold on
+% plot(gRed,'r')
+% hold on
+% plot(gGreen,'g')
+% 
+% 
+% title('Camera response function')
+% ylabel('Log exposure')
+% xlabel('Pixel value')
 
 
 
@@ -26,8 +33,16 @@ xlabel('Pixel value')
 % HDR solver
 [HDR] = HDRSolver(images, dt, gRed, gGreen, gBlue);
 %size(HDR)
-%imshow(HDR);
 
+
+hdr_r=log10(HDR(:,:,1));
+hdr_g=log10(HDR(:,:,2));
+hdr_b=log10(HDR(:,:,3));
+
+imagesc(hdr_r);
+colorbar; 
+colormap jet;
+%imshow(HDR);
 
 %% 3.1 ldr tonemapping
 % local reinhard method
@@ -40,17 +55,18 @@ xlabel('Pixel value')
 
 %% 3.2 global reinhard method
 
-a = 0.6;
+a = 0.65;
+%a = 2.2;
 saturation = 0.6;
-[ldrGlobal, ldrLuminanceMap ] = reinhardGlobal( HDR, a, saturation);
+[ldrGlobal, ldrLuminanceMap] = reinhardGlobal( HDR, a, saturation);
+figure
 imshow(ldrGlobal)
-
 
 %% 3.3 Our own tonemap
 
-% [ToneMap] = globalToneMap(HDR);
-% 
-% imshow(ToneMap)
+%[ToneMap] = globalToneMap(HDR);
+
+%imshow(ToneMap)
 
 % montage({ldrGlobal, ToneMap})
 %% 4. Quality measures

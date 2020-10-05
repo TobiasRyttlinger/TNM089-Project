@@ -1,29 +1,32 @@
 function [toneMap] = globalToneMap(HDR)
 %UNTITLED5 Summary of this function goes here
 HDRNorm=(HDR-min(HDR(:)))/(max(HDR(:))-min(HDR(:)));
-
-
-
 L = rgb2gray(HDRNorm);
-
+gamma = 1;
+A = 1;
+HDRNorm(:,:,1) = A*HDRNorm(:,:,1).^gamma;
+HDRNorm(:,:,2) = A*HDRNorm(:,:,2).^gamma;
+HDRNorm(:,:,3) = A*HDRNorm(:,:,3).^gamma;
 
 Ltemp = log(L);
 N = size(HDRNorm,1) * size(HDRNorm,2);
-Lavg = exp(sum(Ltemp(:))/N);
+Lavg = exp(sum(Ltemp)/N);
 
 
-a = 0.8;
-T = (a/Lavg)*L;
+a = 0.7;
+T = (a./Lavg).*L;
 
 T2max = max(T(:))*max(T(:));
 
 %Reinhard mapping operator
-Ltone = (T(:).*(1+(T(:))./T2max))./(1+T(:));
-Ltone = reshape(Ltone, [size(HDRNorm,1), size(HDRNorm,2)]);
+Ltone = (T.*(1+T./T2max))./(1+T);
 
 
-M = Ltone(:)./L(:);
-M = reshape(M, [size(HDRNorm,1), size(HDRNorm,2)]);
+
+M = Ltone./L;
+
+
+imshow(M)
 
 
 RHDR = HDR(:,:,1);
@@ -43,11 +46,7 @@ toneMap(:,:,2) = immultiply(M,GHDR);
 toneMap(:,:,3) = immultiply(M,BHDR);
 %toneMap = cat(3, Rnew, Gnew, Bnew);
 
-gamma = 0.55;
-A = 0.65;
-toneMap(:,:,1) = A*toneMap(:,:,1).^gamma;
-toneMap(:,:,2) = A*toneMap(:,:,2).^gamma;
-toneMap(:,:,3) = A*toneMap(:,:,3).^gamma;
+
 toneMap=(toneMap-min(toneMap(:)))/(max(toneMap(:))-min(toneMap(:)));
 
 end

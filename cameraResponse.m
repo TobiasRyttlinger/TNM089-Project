@@ -27,13 +27,11 @@ end
 
 l=100;
 
-[gRed,lERed]=gSolver(zRed, dt, l, weight);
+[gRed,~]=gSolver(zRed, dt, l, weight);
 
-[gGreen,lEGreen]=gSolver(zGreen, dt, l, weight);
+[gGreen,~]=gSolver(zGreen, dt, l, weight);
 
-[gBlue,lEBlue]=gSolver(zBlue, dt, l, weight);
-
-
+[gBlue,~]=gSolver(zBlue, dt, l, weight);
 
 
 
