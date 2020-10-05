@@ -3,10 +3,10 @@ clear
 clc
 %% Select image sequence by choosing sequence number 1,2,3 etc
 
-[exposures, images] = getImageSequence(4);
+[exposures, images] = getImageSequence(12);
 
 
-montage(images)
+%montage(images)
 %%
 %figure
 %montage(images)
@@ -55,8 +55,8 @@ colormap jet;
 
 %% 3.2 global reinhard method
 
-a = 0.65;
-%a = 2.2;
+%a = 0.65;
+a = 2.2;
 saturation = 0.6;
 [ldrGlobal, ldrLuminanceMap] = reinhardGlobal( HDR, a, saturation);
 figure
