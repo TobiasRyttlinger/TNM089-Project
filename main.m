@@ -3,7 +3,7 @@ clear
 clc
 %% Select image sequence by choosing sequence number 1,2,3 etc
 
-[exposures, images] = getImageSequence(12);
+[exposures, images] = getImageSequence(7);
 
 
 %montage(images)
@@ -46,17 +46,17 @@ colormap jet;
 
 %% 3.1 ldr tonemapping
 % local reinhard method
-% saturation = 0.6;
-% eps = 0.05;
-% phi = 14;
-% [ldrLocal, luminanceLocal, v, v1Final, sm ]  = reinhardLocal(HDR, saturation, eps, phi);
-% 
-% imshow(ldrLocal);
+saturation = 0.7;
+eps = 0.005;
+phi = 15;
+[ldrLocal, luminanceLocal, v, v1Final, sm ]  = reinhardLocal(HDR, saturation, eps, phi);
+
+imshow(ldrLocal);
 
 %% 3.2 global reinhard method
 
 %a = 0.65;
-a = 2.2;
+a = 1;
 saturation = 0.6;
 [ldrGlobal, ldrLuminanceMap] = reinhardGlobal( HDR, a, saturation);
 figure
