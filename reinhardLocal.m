@@ -1,5 +1,5 @@
 % Implements the Reinhard local tonemapping operator
-%
+%Not our own code, but slighly adjusted
 % parameters:
 % hdr: high dynamic range radiance map, a matrix of size rows * columns * 3
 % luminance map: the corresponding lumiance map of the hdr image

@@ -1,4 +1,4 @@
-
+%% Run each section each to get the results 
 clear
 clc
 %% Select image sequence by choosing sequence number 1,2,3 etc
@@ -7,7 +7,7 @@ clc
 
 
 %montage(images)
-%%
+%% Comment out if you wish to see the input image sequance 
 %figure
 %montage(images)
 
@@ -16,16 +16,16 @@ clc
 
 [dt, gRed, gGreen, gBlue] = cameraResponse(images, exposures);
 % 
-% plot(gBlue,'b')
-% hold on
-% plot(gRed,'r')
-% hold on
-% plot(gGreen,'g')
+ plot(gBlue,'b')
+ hold on
+ plot(gRed,'r')
+ hold on
+ plot(gGreen,'g')
 % 
 % 
-% title('Camera response function')
-% ylabel('Log exposure')
-% xlabel('Pixel value')
+ title('Camera response function')
+ ylabel('Log exposure')
+ xlabel('Pixel value')
 
 
 
@@ -44,11 +44,16 @@ colorbar;
 colormap jet;
 %imshow(HDR);
 
+%% Dynamic range 
+hdrMaxR =max(max(hdr_r))
+hdrMinR =min(min(hdr_r));
+RangeR = (10^(hdrMaxR))/(10^(hdrMinR))
+
 %% 3.1 ldr tonemapping
 % local reinhard method
-saturation = 0.7;
-eps = 0.005;
-phi = 15;
+saturation = 0.5;
+eps = 0.00001;
+phi = 21;
 [ldrLocal, luminanceLocal, v, v1Final, sm ]  = reinhardLocal(HDR, saturation, eps, phi);
 
 imshow(ldrLocal);
@@ -56,7 +61,7 @@ imshow(ldrLocal);
 %% 3.2 global reinhard method
 
 %a = 0.65;
-a = 1;
+a = 0.65;
 saturation = 0.6;
 [ldrGlobal, ldrLuminanceMap] = reinhardGlobal( HDR, a, saturation);
 figure

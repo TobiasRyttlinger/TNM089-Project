@@ -1,5 +1,5 @@
 % Implements the Reinhard global tonemapping operator.
-%
+% Not our own, 
 % parameters:
 % hdr: a rows * cols * 3 matrix representing a hdr radiance map
 %
